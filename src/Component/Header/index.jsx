@@ -9,6 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import DrawerStore from '../Drawer';
 import ProfileStore from '../Profile';
+import './Header.scss';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -55,29 +56,35 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="fixed" sx={{ color: 'black' }}>
+        <Toolbar sx={{ backgroundColor: '#FFD0D0' }}>
           <IconButton
+            className="iconBtnHeader"
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}>
+            sx={{ mr: 2 }}
+            style={{ backgroundColor: 'transparent' }}>
             <DrawerStore />
           </IconButton>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-            MUI
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', sm: 'block' },
+            }}
+            style={{ color: 'black', fontWeight: 'bold' }}>
+            Spring
           </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Find me :((("
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

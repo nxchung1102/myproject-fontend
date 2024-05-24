@@ -11,10 +11,11 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
+import './Drawer.scss';
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
-
+  const arr = ['Inbox', 'Starred', 'Send email', 'Drafts'];
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
@@ -22,7 +23,7 @@ export default function TemporaryDrawer() {
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {arr.map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -52,7 +53,7 @@ export default function TemporaryDrawer() {
   return (
     <div>
       <Button onClick={toggleDrawer(true)}>
-        <MenuIcon sx={{ color: 'white' }} />
+        <MenuIcon sx={{ color: 'black' }} />
       </Button>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}

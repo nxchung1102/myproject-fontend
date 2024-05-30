@@ -1,5 +1,7 @@
+import Login from '../Login';
+
 function Account() {
-  return <h1>Account page</h1>;
+  return <Login />;
 }
 
 export default Account;

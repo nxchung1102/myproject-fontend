@@ -7,7 +7,7 @@ import { ListProduct } from '../../Axios/Product/index';
 import { useState, useEffect } from 'react';
 import TopSearch from './TopSearch';
 import PageHome from '../../Pagination/index';
-import './HomePage.Scss';
+import DisplayBanner from '../../SlideShow/DisplayBanner';
 function Media({ products }) {
   return (
     <Grid container wrap="wrap">
@@ -72,6 +72,7 @@ export default function Home() {
   }, []);
   return (
     <Box sx={{ overflow: 'hidden' }}>
+      <DisplayBanner />
       <TopSearch />
       <hr />
       <h4 style={{ textAlign: 'center' }}>GỢI Ý HÔM NAY</h4>

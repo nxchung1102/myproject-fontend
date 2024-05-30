@@ -17,7 +17,6 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SettingsAccessibilityIcon from '@mui/icons-material/SettingsAccessibility';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import './Drawer.scss';
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
@@ -49,7 +48,11 @@ export default function TemporaryDrawer() {
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {User.map((text) => (
-          <ListItem key={text} disablePadding component={Link} to={'/' + text}>
+          <ListItem
+            key={text}
+            disablePadding
+            component={Link}
+            to={'/' + text.replace(/\s/g, '').toLowerCase()}>
             <ListItemButton>
               <ListItemIcon>{setIconDrawer(text)}</ListItemIcon>
               <ListItemText style={{ color: 'black' }} primary={text} />
@@ -60,7 +63,11 @@ export default function TemporaryDrawer() {
       <Divider />
       <List>
         {Admin.map((text) => (
-          <ListItem key={text} disablePadding component={Link} to={'/' + text}>
+          <ListItem
+            key={text}
+            disablePadding
+            component={Link}
+            to={'/' + text.replace(/\s/g, '').toLowerCase()}>
             <ListItemButton>
               <ListItemIcon>{setIconDrawer(text)}</ListItemIcon>
               <ListItemText style={{ color: 'black' }} primary={text} />

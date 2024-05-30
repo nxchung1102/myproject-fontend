@@ -58,23 +58,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function HeaderStore() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [menuOption, setMenuOption] = React.useState([]);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [closeCart, setCloseCart] = React.useState(true);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-  };
-
-  const handelCloseCart = () => {
-    setCloseCart(true);
-  };
-
-  const handleOpenCart = () => {
-    setCloseCart(false);
+    const label = event.currentTarget.getAttribute('aria-label');
+    switch (label) {
+      case 'profile header':
+        return setMenuOption(['Profile', 'My account']);
+      case 'cart header':
+        return setMenuOption(['cart', 'My cart']);
+      case 'notification header':
+        return setMenuOption(['Notification', 'My Notification']);
+      default:
+        return setMenuOption([]);
+    }
   };
 
   const handleMobileMenuClose = () => {
@@ -91,26 +94,34 @@ export default function PrimarySearchAppBar() {
   };
 
   const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      sx={{ position: 'absolute', top: '35px', left: '-10px' }}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
+  const renderMenu = (menuOption) => {
+    return (
+      <Menu
+        sx={{ position: 'absolute', top: '35px', left: '-10px' }}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}>
+        {menuOption.map((item) => (
+          <MenuItem
+            onClick={handleMenuClose}
+            component={Link}
+            to={`/${item.replace(/\s/g, '').toLowerCase()}`}>
+            {item}
+          </MenuItem>
+        ))}
+      </Menu>
+    );
+  };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -128,8 +139,8 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}>
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton size="large" aria-label="cart header" color="inherit">
           <Badge badgeContent={4} color="error">
             <ShoppingCartIcon />
           </Badge>
@@ -150,7 +161,7 @@ export default function PrimarySearchAppBar() {
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
-          aria-label="account of current user"
+          aria-label="profile header"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit">
@@ -206,31 +217,17 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               size="large"
-              aria-label="show 4 new mails"
-              color="inherit">
-              <Badge onClick={handleOpenCart} badgeContent={4} color="error">
+              aria-label="cart header"
+              color="inherit"
+              onClick={handleProfileMenuOpen}>
+              <Badge badgeContent={4} color="error">
                 <ShoppingCartIcon />
               </Badge>
-              {/* create option */}
-              <Box
-                hidden={closeCart}
-                sx={{
-                  backgroundColor: 'white',
-                  minWidth: '115px',
-                  width: 'auto',
-                  height: '85px',
-                  position: 'absolute',
-                  top: '45px',
-                  right: '20px',
-                  alignContent: 'center',
-                }}>
-                <MenuItem onClick={handelCloseCart}>test</MenuItem>
-                <MenuItem onClick={handelCloseCart}>test</MenuItem>
-              </Box>
             </IconButton>
             <IconButton
               size="large"
-              aria-label="show 17 new notifications"
+              aria-label="notification header"
+              onClick={handleProfileMenuOpen}
               color="inherit">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
@@ -239,7 +236,7 @@ export default function PrimarySearchAppBar() {
             <IconButton
               size="large"
               edge="end"
-              aria-label="account of current user"
+              aria-label="profile header"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
@@ -259,7 +256,7 @@ export default function PrimarySearchAppBar() {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      {renderMenu(menuOption)}
     </Box>
   );
 }

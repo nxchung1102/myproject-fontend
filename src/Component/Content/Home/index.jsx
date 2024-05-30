@@ -5,9 +5,12 @@ import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import { ListProduct } from '../../Axios/Product/index';
 import { useState, useEffect } from 'react';
-import TopSearch from './TopSearch';
+import Trending from './Trending';
 import PageHome from '../../Pagination/index';
 import DisplayBanner from '../../SlideShow/DisplayBanner';
+import FooterStore from '../../Footer';
+import { Container } from '@mui/material';
+
 function Media({ products }) {
   return (
     <Grid container wrap="wrap">
@@ -56,7 +59,7 @@ function Media({ products }) {
   );
 }
 
-export default function Home() {
+export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [sizePage, setSizePage] = useState(0);
   const getList = async () => {
@@ -71,13 +74,16 @@ export default function Home() {
     getList();
   }, []);
   return (
-    <Box sx={{ overflow: 'hidden' }}>
-      <DisplayBanner />
-      <TopSearch />
-      <hr />
-      <h4 style={{ textAlign: 'center' }}>GỢI Ý HÔM NAY</h4>
-      <Media products={products} />
-      <PageHome size={sizePage} />
+    <Box sx={{ overflow: 'auto', marginTop: '-60px' }}>
+      <Container maxWidth="lg">
+        <DisplayBanner />
+        <Trending />
+        <hr />
+        <h4 style={{ textAlign: 'center' }}>GỢI Ý HÔM NAY</h4>
+        <Media products={products} />
+        <PageHome size={sizePage} />
+      </Container>
+      <FooterStore />
     </Box>
   );
 }

@@ -97,7 +97,7 @@ Media.propTypes = {
   loading: PropTypes.bool,
 };
 
-export default function TopSearch() {
+export default function Trending() {
   const [isHovered, setIsHovered] = React.useState(false);
   const handleMouseEnter = () => {
     setIsHovered(true);

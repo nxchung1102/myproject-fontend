@@ -96,30 +96,36 @@ export default function HeaderStore() {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (menuOption) => {
     return (
-      <Menu
-        sx={{ position: 'absolute', top: '35px', left: '-10px' }}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        id={menuId}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}>
-        {menuOption.map((item) => (
-          <MenuItem
-            onClick={handleMenuClose}
-            component={Link}
-            to={`/${item.replace(/\s/g, '').toLowerCase()}`}>
-            {item}
-          </MenuItem>
-        ))}
-      </Menu>
+      <Box sx={{ maxHeight: '60px', height: '60px' }}>
+        <Menu
+          sx={{
+            position: 'absolute',
+            top: '35px',
+            left: '-10px',
+          }}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          id={menuId}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={isMenuOpen}
+          onClose={handleMenuClose}>
+          {menuOption.map((item) => (
+            <MenuItem
+              onClick={handleMenuClose}
+              component={Link}
+              to={`/${item.replace(/\s/g, '').toLowerCase()}`}>
+              {item}
+            </MenuItem>
+          ))}
+        </Menu>
+      </Box>
     );
   };
 
@@ -182,14 +188,7 @@ export default function HeaderStore() {
             maxHeight: '10vh',
             position: 'relative',
           }}>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}>
-            <DrawerStore />
-          </IconButton>
+          <DrawerStore />
           <Typography
             variant="h6"
             noWrap

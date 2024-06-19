@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,11 +9,12 @@ import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import DrawerStore from '../Drawer';
+import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import MoreIcon from '@mui/icons-material/MoreVert';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -23,10 +23,11 @@ const Search = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
+  marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(3),
     width: 'auto',
   },
 }));
@@ -43,41 +44,27 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
-  width: '100%',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
     },
   },
 }));
 
-export default function HeaderStore() {
+export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [menuOption, setMenuOption] = React.useState([]);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-    const label = event.currentTarget.getAttribute('aria-label');
-    switch (label) {
-      case 'profile header':
-        return setMenuOption(['Profile', 'My account']);
-      case 'cart header':
-        return setMenuOption(['cart', 'My cart']);
-      case 'notification header':
-        return setMenuOption(['Notification', 'My Notification']);
-      default:
-        return setMenuOption([]);
-    }
   };
 
   const handleMobileMenuClose = () => {
@@ -94,40 +81,25 @@ export default function HeaderStore() {
   };
 
   const menuId = 'primary-search-account-menu';
-  const renderMenu = (menuOption) => {
-    return (
-      <Box sx={{ maxHeight: '60px', height: '60px' }}>
-        <Menu
-          sx={{
-            position: 'absolute',
-            top: '35px',
-            left: '-10px',
-          }}
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          id={menuId}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={isMenuOpen}
-          onClose={handleMenuClose}>
-          {menuOption.map((item) => (
-            <MenuItem
-              onClick={handleMenuClose}
-              component={Link}
-              to={`/${item.replace(/\s/g, '').toLowerCase()}`}>
-              {item}
-            </MenuItem>
-          ))}
-        </Menu>
-      </Box>
-    );
-  };
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}>
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
+  );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -145,13 +117,13 @@ export default function HeaderStore() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton size="large" aria-label="cart header" color="inherit">
+      <MenuItem>
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
-            <ShoppingCartIcon />
+            <MailIcon />
           </Badge>
         </IconButton>
-        <p>Cart</p>
+        <p>Messages</p>
       </MenuItem>
       <MenuItem>
         <IconButton
@@ -167,7 +139,7 @@ export default function HeaderStore() {
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
-          aria-label="profile header"
+          aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit">
@@ -180,35 +152,29 @@ export default function HeaderStore() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ color: 'black' }}>
-        <Toolbar
-          sx={{
-            backgroundColor: '#FFD0D0',
-            height: '60px',
-            maxHeight: '10vh',
-            position: 'relative',
-          }}>
-          <DrawerStore />
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{
-              display: { xs: 'none', sm: 'block' },
-              color: 'black',
-              fontWeight: 'bold',
-            }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-              {' '}
-              Spring{' '}
-            </Link>
+            sx={{ display: { xs: 'none', sm: 'block' } }}>
+            MUI
           </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Find me :((("
+              placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
@@ -216,17 +182,15 @@ export default function HeaderStore() {
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               size="large"
-              aria-label="cart header"
-              color="inherit"
-              onClick={handleProfileMenuOpen}>
+              aria-label="show 4 new mails"
+              color="inherit">
               <Badge badgeContent={4} color="error">
-                <ShoppingCartIcon />
+                <MailIcon />
               </Badge>
             </IconButton>
             <IconButton
               size="large"
-              aria-label="notification header"
-              onClick={handleProfileMenuOpen}
+              aria-label="show 17 new notifications"
               color="inherit">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
@@ -235,7 +199,7 @@ export default function HeaderStore() {
             <IconButton
               size="large"
               edge="end"
-              aria-label="profile header"
+              aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
@@ -250,12 +214,14 @@ export default function HeaderStore() {
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="inherit"></IconButton>
+              color="inherit">
+              <MoreIcon />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu(menuOption)}
+      {renderMenu}
     </Box>
   );
 }

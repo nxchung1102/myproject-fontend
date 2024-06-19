@@ -1,0 +1,7 @@
+.home {
+  .content {
+    max-height: 100vh;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+  }
+}
